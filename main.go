@@ -36,11 +36,24 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
+
+	err = proxy.LoadFromURL(proxy.SOCKS4, "https://proxyspace.pro/socks4.txt", &proxyManager)
+	if err != nil {
+		log.Fatal(err)
+	}
+
 	fmt.Println("socks5...")
 	err = proxy.LoadFromFile(proxy.SOCKS5, "socks5.txt", &proxyManager)
 	if err != nil {
 		log.Fatal(err)
 	}
+
+	err = proxy.LoadFromURL(proxy.SOCKS5, "https://proxyspace.pro/socks5.txt", &proxyManager)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	fmt.Printf("Loaded %d proxies", proxyManager.Length())
 
 	fmt.Println("Preparing to attack...")
 
