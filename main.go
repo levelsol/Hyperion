@@ -23,13 +23,13 @@ var (
 )
 
 func main() {
-  
+
 	fmt.Println("██╗░░█╗██╗░░░██╗██████╗░███████╗██████╗░██╗░█████╗░███╗░░██╗\n██║░░██║╚██╗░██╔╝██╔══██╗██╔════╝██╔══██╗██║██╔══██╗████╗░██║\n███████║░╚████╔╝░██████╔╝█████╗░░██████╔╝██║██║░░██║██╔██╗██║\n██╔══██║░░╚██╔╝░░██╔═══╝░██╔══╝░░██╔══██╗██║██║░░██║██║╚████║\n██║░░██║░░░██║░░░██║░░░░░███████╗██║░░██║██║╚█████╔╝██║░╚███║\n╚═╝░░╚═╝░░░╚═╝░░░╚═╝░░░░░╚══════╝╚═╝░░╚═╝╚═╝░╚════╝░╚═╝░░╚══╝\n  Also try Ares!\n  Made by AnAverageBeing\n")
 	fmt.Println("  Starting Hyperion...")
 	fmt.Println("Parsing arguments...")
 	flag.Parse()
 	fmt.Println("Parsing proxy:")
-  
+
 	proxyManager := proxy.ProxyManager{}
 	fmt.Println("socks4...")
 	err := proxy.LoadFromFile(proxy.SOCKS4, "socks4.txt", &proxyManager)
@@ -41,7 +41,7 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
-  
+
 	fmt.Println("Preparing to attack...")
 
 	info := core.AttackInfo{
@@ -61,12 +61,13 @@ func main() {
 		Info:         &info,
 		ProxyManager: &proxyManager,
 	}
+
 	method.Start()
 
-  	fmt.Println("  Attack started.")
+	fmt.Println("  Attack started.")
 	time.Sleep(time.Duration(*duration) * time.Second)
 	fmt.Println("  Attack ended.")
-  
+
 }
 
 func registerMethod(info *core.AttackInfo, proxyManager *proxy.ProxyManager) {

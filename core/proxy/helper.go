@@ -2,6 +2,8 @@ package proxy
 
 import (
 	"bufio"
+	"errors"
+	"net/http"
 	"os"
 	"regexp"
 	"strings"
@@ -22,6 +24,40 @@ func LoadFromFile(protocol ProxyProtocol, path string, manager *ProxyManager) er
 		match := proxyRegex.FindStringSubmatch(line)
 		if len(match) != 3 {
 			return err
+		}
+
+		ip := match[1]
+		port := match[2]
+
+		proxy := &Proxy{
+			Ip:       ip,
+			Port:     port,
+			Protocol: protocol,
+		}
+
+		manager.Add(proxy)
+	}
+
+	return scanner.Err()
+}
+
+func LoadFromURL(protocol ProxyProtocol, url string, manager *ProxyManager) error {
+	resp, err := http.Get(url)
+	if err != nil {
+		return err
+	}
+	defer resp.Body.Close()
+
+	if resp.StatusCode != http.StatusOK {
+		return errors.New("failed to fetch proxies from URL")
+	}
+
+	scanner := bufio.NewScanner(resp.Body)
+	for scanner.Scan() {
+		line := strings.TrimSpace(scanner.Text())
+		match := proxyRegex.FindStringSubmatch(line)
+		if len(match) != 3 {
+			return errors.New("invalid proxy format")
 		}
 
 		ip := match[1]
